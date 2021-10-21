@@ -15,9 +15,24 @@ export const useTodo = () => {
     );
   }, []);
 
-  const removeTodo = useCallback((e) => {
-    console.log(e);
-    //setTodoState((prevState) => prevState.filter((todo) => todo.id !== id));
+  const removeTodo = useCallback((id) => {
+    setTodoState((prevState) => prevState.filter((todo) => todo.id !== id));
+  }, []);
+
+  const toggleUpdate = useCallback((id) => {
+    setTodoState((prevState) =>
+      prevState.map((todo) =>
+        todo.id === id ? { ...todo, isUpdating: !todo.isUpdating } : todo
+      )
+    );
+  }, []);
+
+  const updateTodo = useCallback((id, value) => {
+    setTodoState((prevState) =>
+      prevState.map((todo) =>
+        todo.id === id ? { ...todo, todo: value, isUpdating: false } : todo
+      )
+    );
   }, []);
 
   const createTodo = useCallback(
@@ -29,7 +44,7 @@ export const useTodo = () => {
 
       setTodoState((prevState) => [
         ...prevState,
-        { id: nextId, todo, isChecked: false },
+        { id: nextId, todo, isChecked: false, isUpdating: false },
       ]);
     },
     [todoState]
@@ -73,6 +88,8 @@ export const useTodo = () => {
     todoState,
     toggleTodo,
     removeTodo,
+    toggleUpdate,
+    updateTodo,
     createTodo,
     dragStart,
     dragOver,

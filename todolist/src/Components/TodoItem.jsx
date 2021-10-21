@@ -1,7 +1,7 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-function TodoItem({ todo, toggleTodo, removeTodo }) {
+function TodoItem({ todo, toggleTodo, updateTodo, removeTodo, toggleUpdate }) {
   return (
     <Container>
       <Inner>
@@ -11,9 +11,27 @@ function TodoItem({ todo, toggleTodo, removeTodo }) {
         >
           {todo.isChecked && "V"}
         </CheckCircle>
-        <Text isChecked={todo.isChecked}>{todo.todo}</Text>
+        {todo.isUpdating ? (
+          <span>
+            <input
+              placeholder="Enter를 눌러 저장하세요"
+              defaultValue={todo.todo}
+              onKeyPress={(e) => {
+                e.code === "Enter" && updateTodo(todo.id, e.target.value);
+              }}
+            />
+            <h6 style={{ color: "#119955" }}>Enter를 눌러 저장하세요</h6>
+          </span>
+        ) : (
+          <Text isChecked={todo.isChecked}>{todo.todo}</Text>
+        )}
       </Inner>
-      <Remove onClick={() => removeTodo(todo.id)}>X</Remove>
+      <Inner>
+        <Icons edit onClick={() => toggleUpdate(todo.id)}>
+          🖍
+        </Icons>
+        <Icons onClick={() => removeTodo(todo.id)}>X</Icons>
+      </Inner>
     </Container>
   );
 }
@@ -24,6 +42,7 @@ const Container = styled.div`
   width: 100%;
   display: flex;
   justify-content: space-between;
+  align-items: center;
   padding: 12px 0px;
 `;
 
@@ -64,15 +83,20 @@ const Text = styled.div`
     `}
 `;
 
-const Remove = styled.div`
+const Icons = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
 
   color: #119955;
   cursor: pointer;
+  font-size: 20px;
 
   :hover {
-    color: red;
+    color: ${(props) => (!props.edit ? "red" : "blue")};
+  }
+
+  & + & {
+    margin-left: 10px;
   }
 `;

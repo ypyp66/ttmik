@@ -53,7 +53,7 @@ const CircleButton = styled.button`
 
   font-size: 48px;
   color: white;
-  border-radius: 50%;
+  border-radius: 30%;
   border: none;
 
   margin-left: 15px;

@@ -2,7 +2,15 @@ import React from "react";
 import styled from "styled-components";
 import TodoItem from "./TodoItem";
 
-function TodoLists({ todoState, removeTodo, toggleTodo, dragStart, dragOver }) {
+function TodoLists({
+  todoState,
+  removeTodo,
+  toggleUpdate,
+  updateTodo,
+  toggleTodo,
+  dragStart,
+  dragOver,
+}) {
   return (
     <Container>
       {todoState.map((todo, index) => (
@@ -13,10 +21,11 @@ function TodoLists({ todoState, removeTodo, toggleTodo, dragStart, dragOver }) {
           onDragOver={() => dragOver(index)}
         >
           <TodoItem
-            index={index}
             todo={todo}
             removeTodo={removeTodo}
             toggleTodo={toggleTodo}
+            toggleUpdate={toggleUpdate}
+            updateTodo={updateTodo}
           />
         </div>
       ))}

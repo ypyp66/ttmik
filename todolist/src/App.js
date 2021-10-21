@@ -8,8 +8,16 @@ import { useTodo } from "./Utils/TodoService";
 import "./App.css";
 
 function App() {
-  const { todoState, createTodo, removeTodo, toggleTodo, dragStart, dragOver } =
-    useTodo();
+  const {
+    todoState,
+    createTodo,
+    removeTodo,
+    toggleUpdate,
+    updateTodo,
+    toggleTodo,
+    dragStart,
+    dragOver,
+  } = useTodo();
 
   return (
     <Container>
@@ -19,6 +27,8 @@ function App() {
           todoState={todoState}
           removeTodo={removeTodo}
           toggleTodo={toggleTodo}
+          toggleUpdate={toggleUpdate}
+          updateTodo={updateTodo}
           dragStart={dragStart}
           dragOver={dragOver}
         />
