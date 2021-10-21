@@ -10,7 +10,9 @@ export const useTodo = () => {
   const toggleTodo = useCallback((id) => {
     setTodoState((prev) =>
       prev.map((item) =>
-        item.id === id ? { ...item, isChecked: !item.isChecked } : item
+        item.id === id
+          ? { ...item, isChecked: !item.isChecked, isUpdating: false }
+          : item
       )
     );
   }, []);
@@ -22,7 +24,9 @@ export const useTodo = () => {
   const toggleUpdate = useCallback((id) => {
     setTodoState((prevState) =>
       prevState.map((todo) =>
-        todo.id === id ? { ...todo, isUpdating: !todo.isUpdating } : todo
+        todo.id === id && !todo.isChecked
+          ? { ...todo, isUpdating: !todo.isUpdating }
+          : todo
       )
     );
   }, []);
