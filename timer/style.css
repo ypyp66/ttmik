@@ -1,0 +1,79 @@
+:root {
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  width: 100%;
+  height: 100%;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background-image: url("https://random.imagecdn.app/1920/1080");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.circle_progress_wrap {
+  position: relative;
+}
+.circle_progress {
+  transform: rotate(-90deg);
+}
+.frame,
+.bar {
+  fill: none;
+}
+.frame {
+  stroke: #e6e6e6;
+}
+.bar {
+  stroke: #03c75a;
+  stroke-linecap: round;
+}
+
+.value {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  color: #888;
+  font-size: 4rem;
+  font-weight: bolder;
+}
+.soon {
+  stroke: red;
+  color: red;
+}
+
+@keyframes breath {
+  from {
+    transform: scale(1);
+  }
+
+  to {
+    transform: scale(1.2);
+  }
+}
+
+.breath {
+  animation: breath 0.5s ease infinite alternate;
+}

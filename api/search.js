@@ -1,0 +1,48 @@
+const puppeteer = require("puppeteer");
+const cheerio = require("cheerio");
+
+(async () => {
+  const browser = await puppeteer.launch();
+  const page = await browser.newPage();
+  await page.goto("https://datalab.naver.com/");
+  const html = await page.content();
+
+  const $ = cheerio.load(html);
+
+  const ul = $("div.keyword_rank > div > div > ul");
+  const title = $("div.keyword_rank > div > strong ");
+
+  const ulArr = [];
+  let titleArr = [];
+  let obj = {};
+
+  console.log(ul.length, title.length);
+
+  title.each((index, element) => {
+    if (index >= ul.length - 1) return;
+    const span = $(element).find(".title_cell");
+
+    span.each((idx, e) => {
+      titleArr[index] = $(e).text();
+    });
+  });
+
+  ul.each((index, element) => {
+    if (index >= ul.length - 1) return;
+    const arr = [];
+    const li = $(element).find(".list");
+
+    li.each((idx, a) => {
+      const id = $(a).find(".num").text();
+      const text = $(a).find(".title").text();
+      arr.push({
+        id,
+        text,
+      });
+    });
+    ulArr.push(arr);
+    obj[titleArr[index]] = arr;
+  });
+
+  console.log(obj);
+})();
