@@ -1,6 +1,4 @@
-let minutes = 0;
-let seconds = 0;
-let millisec = 0;
+let worker;
 
 const $millisec = document.getElementById("millisec");
 const $second = document.getElementById("seconds");
@@ -13,44 +11,39 @@ const $resetBtn = document.querySelector(".reset");
 let interval;
 
 $startBtn.addEventListener("click", () => {
-  clearInterval(interval);
-  interval = setInterval(loop, 10);
+  worker.postMessage("start");
 });
 
 $stopBtn.addEventListener("click", () => {
-  clearInterval(interval);
+  worker.postMessage("stop");
 });
 
 $resetBtn.addEventListener("click", () => {
-  clearInterval(interval);
-
-  millisec = 0;
-  seconds = 0;
-  minutes = 0;
-
-  $millisec.textContent = "00";
-  $second.textContent = "00";
-  $minutes.textContent = "00";
+  worker.postMessage("reset");
 });
 
-function loop() {
-  millisec++;
-
-  $millisec.textContent = millisec > 9 ? millisec : `0${millisec}`;
-
-  if (millisec > 99) {
-    seconds++;
-    $second.textContent = seconds > 9 ? seconds : `0${seconds}`;
-
-    millisec = 0;
-    $millisec.textContent = "00";
+function startWorker() {
+  if (!!window.Worker) {
+    if (worker) {
+      stopWorker();
+    }
   }
+  worker = new Worker("worker.js");
 
-  if (seconds > 59) {
-    minutes++;
-    $minutes.textContent = minutes > 9 ? minutes : `0${minutes}`;
+  worker.onmessage = (e) => {
+    const { minutes, seconds, millisec } = e.data;
 
-    seconds = 0;
-    $second.textContent = "00";
+    $minutes.textContent = minutes;
+    $second.textContent = seconds;
+    $millisec.textContent = millisec;
+  };
+}
+
+function stopWorker() {
+  if (worker) {
+    worker.terminate();
+    worker = null;
   }
 }
+
+startWorker();

@@ -1,24 +1,20 @@
 const root = document.getElementById("root");
-//const time = prompt("분을 입력해주세요");
 const timer = prompt("분을 입력해주세요");
 const timeTosecond = timer * 60;
-let worker; // worker
-let i = 0; //
+let worker;
+let i = 0;
 let check = false;
 
 // worker 실행
 function startWorker() {
-  // Worker 지원 유무 확인
   if (!!window.Worker) {
-    // 실행하고 있는 워커 있으면 중지시키기
     if (worker) {
       stopWorker();
     }
 
     worker = new Worker("worker.js");
-    worker.postMessage(timer); // 워커에 메시지를 보낸다.
+    worker.postMessage(timer);
 
-    // 워커로 부터 메시지를 수신한다.
     worker.onmessage = function (e) {
       const { min, sec } = e.data;
       const dashArray = 140 * 2 * Math.PI;
